@@ -11,3 +11,4 @@ opencv-python
 einshape
 ipympl
 tqdm
+nvidia-cudnn-cu11
