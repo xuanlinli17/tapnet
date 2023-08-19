@@ -224,6 +224,7 @@ fig.canvas.mpl_connect('button_press_event', on_click)
 plt.show()
 # you need to manually close the plot window here
 print("tracking...")
+print(select_points)
 # @title Predict Point Tracks for the Selected Points {form-width: "25%"}
 
 resize_height = 256  # @param {type: "integer"}
@@ -245,6 +246,7 @@ def convert_select_points_to_query_points(frame, points):
   return query_points
 
 frames = media.resize_video(video, (resize_height, resize_width))
+print(frames.dtype)
 print("resize video complete")
 
 import time
@@ -255,7 +257,7 @@ query_points = transforms.convert_grid_coordinates(
 print("convert select points to query points complete", time.time() - tt)
 
 tt = time.time()
-query_features, _ = online_init_apply(frames=preprocess_frames(frames[None, None, -1]), query_points=query_points[None])
+query_features, _ = online_init_apply(frames=preprocess_frames(frames[None, None, -1]), query_points=query_points[:10][None])
 print("initial query features jit complete", time.time() - tt)
 tt = time.time()
 query_features, _ = online_init_apply(frames=preprocess_frames(frames[None, None, 0]), query_points=query_points[None])
@@ -285,6 +287,7 @@ for i in tqdm(range(frames.shape[0])):
       query_features=query_features,
       causal_context=causal_state,
   )
+  print(prediction['tracks'].shape, prediction['occlusion'].shape, prediction['expected_dist'].shape)
   predictions.append(prediction)
 
 tracks = np.concatenate([x['tracks'][0] for x in predictions], axis=1)
