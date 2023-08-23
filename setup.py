@@ -1,4 +1,5 @@
-from setuptools import setup, find_packages
+from setuptools import setup
+
 
 def read_requirements():
     with open("requirements_inference.txt", "r") as f:
@@ -6,11 +7,14 @@ def read_requirements():
     install_requires = list(filter(None, lines))
     return install_requires
 
+
 if __name__ == "__main__":
     setup(
         name='tapnet',
         version='0.0.1',
         description="TAPIR DeepMind",
         install_requires=read_requirements(),
-        packages=find_packages(include=[]),
+        package_dir={
+            "tapnet": ".",
+        }
     )
