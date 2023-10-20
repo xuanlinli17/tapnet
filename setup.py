@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 
 def read_requirements():
@@ -14,7 +14,5 @@ if __name__ == "__main__":
         version='0.0.1',
         description="TAPIR DeepMind",
         install_requires=read_requirements(),
-        package_dir={
-            "tapnet": ".",
-        }
+        packages=find_packages(include=["tapnet*"]),
     )
